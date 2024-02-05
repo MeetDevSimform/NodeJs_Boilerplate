@@ -1,0 +1,220 @@
+swagger: "2.0"
+info:
+  title: Node TS Boilder Plate APIs
+  description: ""
+  version: 1.0.0
+host: localhost:8080
+basePath: /api/v1
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: 'Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345".'
+
+paths:
+  /roles/create:
+    post:
+      tags:
+        - Roles
+      summary: Create Role
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+          description: 'sample: {
+            "name": "Admin",
+            "description": "Role for normal users",
+            "permissionKeys":["create_event", "delete_event", "show_orders", "delete_orders"],
+            "key":"admin"
+            }'
+
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+
+  /users/signup:
+    post:
+      tags:
+        - Users
+      summary: Signup
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+          description: 'sample: {
+            "fname": "test",
+            "lname": "test",
+            "email": "test@test.com",
+            "password": "test@12345",
+            "roleKey": "user",
+            "isActive": true
+            }'
+
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Signin
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+          description: 'sample: {
+            "email": "test@test.com",
+            "password": "password"
+            }'
+
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List all Users.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+
+  /events:
+    get:
+      tags:
+        - Events
+      summary: List all Events
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+  /events/create:
+    post:
+      tags:
+        - Events
+      summary: Create Event
+      security:
+        - Bearer: []
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: poster
+          in: formData
+          required: true
+          type: file
+        - name: name
+          in: formData
+          required: true
+          type: string
+        - name: slug
+          in: formData
+          required: true
+          type: string
+        - name: startDate
+          in: formData
+          required: true
+          type: string
+        - name: endDate
+          in: formData
+          required: true
+          type: string
+        - name: description
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: ""
+
+  /tickets:
+    get:
+      tags:
+        - Tickets
+      summary: List all Tickets
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+  /tickets/create:
+    post:
+      tags:
+        - Tickets
+      summary: Create Ticket
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+          description: 'sample: {
+            "name": "Ticket1",
+            "description": "Tickets for fun Event1",
+            "price": 500,
+            "quantity": 1000,
+            "eventId": "636382ac931234813161aff1"
+            }'
+      responses:
+        200:
+          description: ""
+
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: List all Orders
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+  /orders/create:
+    post:
+      tags:
+        - Orders
+      summary: Create Order
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+          description: 'sample: {
+            "tickets":"636389f2b751aa11f04bc299",
+            "quantity":5
+            }'
+
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""

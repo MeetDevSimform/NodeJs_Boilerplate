@@ -1,0 +1,38 @@
+version: "1.0"
+
+services:
+  dev:
+    container_name: node-ts
+    image: node-ts-dev:1.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run dev
+    ports:
+      - 8080:8080
+      - 27017:27017
+    networks:
+      - nodejs-network
+    volumes:
+      - .:/usr/src/app
+    restart: unless-stopped
+  prod:
+    container_name: node-ts
+    image: node-ts-prod:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start
+    ports:
+      - 8080:8080
+      - 27017:27017
+    networks:
+      - nodejs-network
+    volumes:
+      - .:/usr/src/app
+    restart: unless-stopped
+
+networks:
+  nodejs-network:
